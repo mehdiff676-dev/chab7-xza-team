@@ -525,11 +525,10 @@ def signal_handler(sig, frame):
     sys.exit(0)
 
 if __name__ == "__main__":
-    # Register signal handlers for graceful shutdown
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
     atexit.register(cleanup)
-    
+
     try:
         accounts = load_accounts('accounts.json')
         for account_id, password in accounts.items():
@@ -541,9 +540,7 @@ if __name__ == "__main__":
             time.sleep(3)
     except FileNotFoundError:
         print("No accounts file found. Starting without preloaded accounts.")
-    
-    try:
-        app.run(host='0.0.0.0', port=5000, debug=False)
-    except KeyboardInterrupt:
-        print("Server stopped by user")
-        cleanup()
+
+    # تعديل التشغيل ليتوافق مع Vercel
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)

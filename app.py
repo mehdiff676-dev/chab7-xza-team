@@ -683,8 +683,6 @@ if __name__ == "__main__":
     except FileNotFoundError:
         print("No accounts file found. Starting without preloaded accounts.")
 
-    try:
-        app.run(host='0.0.0.0', port=5000, debug=False)
-    except KeyboardInterrupt:
-        print("Server stopped by user")
-        cleanup()
+    # تعديل التشغيل ليتوافق مع Vercel
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port, debug=False)
